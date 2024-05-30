@@ -24,7 +24,7 @@ go.work.sum
 # env file
 .env
 
-./gif
-./backup
+gif
+backup
 .DS_Store
 .idea/
