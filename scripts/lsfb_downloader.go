@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func main() {
+func download() {
 	// Create a directory to store GIFs
 	err := os.Mkdir("gif", 0755)
 	if err != nil && !os.IsExist(err) {
@@ -70,7 +70,7 @@ func main() {
 		}(id, signe, definition, i) // Pass the ID, signe, definition, and row index to the goroutine
 
 		// Introduce a delay between goroutines to avoid overloading the server
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(200 * time.Millisecond)
 	}
 
 	// Wait for all goroutines to finish

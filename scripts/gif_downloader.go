@@ -1,4 +1,4 @@
-package main
+package scripts
 
 import (
 	"encoding/json"
@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 )
 
 // GIFResponse represents the JSON response from the GIF query
@@ -33,11 +34,16 @@ func DownloadGIFAndUpdateRecords(id, signe, definition string, rowIndex int, rec
 		return nil
 	}
 
-	// Query URL for the GIF
-	gifURL := "https://www.corpus-lsfb.be/getVocabulaire.php?mot=" + id
-
-	// Make a GET request to fetch the GIF JSON response
-	resp, err := http.Get(gifURL)
+	// Retry mechanism with exponential backoff
+	var resp *http.Response
+	var err error
+	for i := 0; i < 5; i++ {
+		resp, err = http.Get("https://www.corpus-lsfb.be/getVocabulaire.php?mot=" + id)
+		if err == nil {
+			break
+		}
+		time.Sleep(time.Duration(1<<i) * time.Second) // Exponential backoff
+	}
 	if err != nil {
 		return fmt.Errorf("failed to retrieve GIF for ID %s: %v", id, err)
 	}
