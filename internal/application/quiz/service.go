@@ -14,7 +14,7 @@ var (
 	typeWrite     = "write"
 )
 
-var quizzes []domain.QuizInterface
+var quizzes []domain.QuizQuestionType
 
 type CSVRecord struct {
 	ID         string
@@ -56,7 +56,7 @@ func (qs *Service) loadCSV(filename string) {
 		qs.records = append(qs.records, record)
 	}
 }
-func (qs *Service) GetQuiz() domain.QuizInterface {
+func (qs *Service) GetQuiz() domain.QuizQuestionType {
 	switch rand.Intn(3) {
 	case 0:
 		return qs.generateQuizQuestion()

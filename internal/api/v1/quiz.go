@@ -7,7 +7,7 @@ import (
 )
 
 type QuizService interface {
-	GetQuiz() domain.QuizInterface
+	GetQuiz() domain.QuizQuestionType
 	//CheckAnswer(quiz Quizz) bool
 }
 
@@ -28,8 +28,9 @@ func (handler *QuizHTTPHandler) HandleGetQuiz(w http.ResponseWriter, r *http.Req
 
 	w.Header().Set("Content-Type", "application/json")
 	quiz := handler.quizService.GetQuiz()
+	wrapped := domain.WrapQuizQuestion(quiz)
 
-	if err := json.NewEncoder(w).Encode(quiz); err != nil {
+	if err := json.NewEncoder(w).Encode(wrapped); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

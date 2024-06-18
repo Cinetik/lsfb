@@ -1,7 +1,8 @@
 package domain
 
-type QuizInterface interface {
-	Type() string
+// QuizQuestionType Interface for quiz question types
+type QuizQuestionType interface {
+	GetType() string
 }
 
 // QuizQuestion represents a quiz question with signs
@@ -23,14 +24,28 @@ type WriteDefinitionQuizQuestion struct {
 	ID string `json:"id"`
 }
 
-func (q *QuizQuestion) Type() string {
+func (q *QuizQuestion) GetType() string {
 	return "SignsQuiz"
 }
 
-func (dq *DefinitionQuizQuestion) Type() string {
+func (dq *DefinitionQuizQuestion) GetType() string {
 	return "DefinitionQuiz"
 }
 
-func (wd *WriteDefinitionQuizQuestion) Type() string {
+func (wd *WriteDefinitionQuizQuestion) GetType() string {
 	return "WriteDefinitionQuiz"
+}
+
+// QuizQuestionWrapper Wrapper struct for JSON encoding
+type QuizQuestionWrapper struct {
+	Type string      `json:"type"`
+	Data interface{} `json:"data"`
+}
+
+// WrapQuizQuestion wraps a quiz question with its type
+func WrapQuizQuestion(q QuizQuestionType) QuizQuestionWrapper {
+	return QuizQuestionWrapper{
+		Type: q.GetType(),
+		Data: q,
+	}
 }
